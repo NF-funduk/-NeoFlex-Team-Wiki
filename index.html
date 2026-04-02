@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoFlex Team Wiki | Внутренняя документация</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/wiki.css">
+</head>
+<body>
+    <div class="wiki-container">
+        <aside class="wiki-sidebar" id="wikiSidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-cat"></i>
+                    <span><span class="highlight">[NeoFlex]</span> Team Wiki</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="sidebar-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Поиск по вики..." id="wikiSearch">
+            </div>
+            <nav class="sidebar-nav">
+    <div class="nav-section">
+        <div class="nav-section-title">
+            <i class="fas fa-home"></i>
+            <span>Главное</span>
+        </div>
+        <ul>
+            <li class="active" data-page="dashboard">
+                <i class="fas fa-dashboard"></i>
+                <span>Информация</span>
+            </li>
+            <li data-page="rules">
+                <i class="fas fa-gavel"></i>
+                <span>Правила</span>
+            </li>
+        </ul>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">
+            <i class="fas fa-users"></i>
+            <span>Состав проекта</span>
+        </div>
+        <ul>
+            <li data-page="team-structure">
+                <i class="fas fa-sitemap"></i>
+                <span>Структура</span>
+            </li>
+            <li data-page="team-rules">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Правила состава</span>
+            </li>
+            <li data-page="roles">
+                <i class="fas fa-tags"></i>
+                <span>Роли и обязанности</span>
+            </li>
+            <li data-page="staff-list">
+                <i class="fas fa-id-card"></i>
+                <span>Команда проекта</span>
+            </li>
+        </ul>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">
+            <i class="fas fa-ellipsis-h"></i>
+            <span>Другое</span>
+        </div>
+        <ul>
+            <li data-page="resources">
+                <i class="fas fa-link"></i>
+                <span>Полезные ссылки</span>
+            </li>
+            <li data-page="faq">
+                <i class="fas fa-question-circle"></i>
+                <span>FAQ</span>
+            </li>
+        </ul>
+    </div>
+</nav>
+            <div class="sidebar-footer">
+                 <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                <div>
+            <div class="user-name" id="userName">Сотрудник</div>
+            <div class="user-role" id="userRole">Team Member</div>
+        </div>
+    </div>
+</div>
+        </aside>
+        <main class="wiki-main">
+            <div class="wiki-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="breadcrumb" id="breadcrumb">
+                        <span>Вики</span>
+                        <i class="fas fa-chevron-right"></i>
+                        <span class="active">Информация</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="header-btn" id="fullscreenBtn">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <button class="header-btn" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="wiki-content" id="wikiContent">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Загрузка...</span>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/wiki.js"></script>
+</body>
+</html>
