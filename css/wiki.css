@@ -1913,3 +1913,38 @@ p {
         font-size: 18px;
     }
 }
+
+@media (max-width: 768px) {
+    .wiki-header {
+        position: sticky;
+        top: 0;
+        z-index: 1010;
+        background: var(--bg-primary);
+    }
+    
+    .wiki-sidebar.mobile-open {
+        z-index: 1020;
+    }
+    
+    .wiki-sidebar.mobile-open ~ .wiki-main::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1015;
+        pointer-events: none;
+    }
+    
+    .mobile-menu-btn {
+        display: block;
+        z-index: 1025;
+        position: relative;
+    }
+    
+    .wiki-sidebar.mobile-open .wiki-header {
+        z-index: 1010;
+    }
+}
