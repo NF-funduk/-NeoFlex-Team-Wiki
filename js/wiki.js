@@ -330,47 +330,53 @@
     }
     
     // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
-    function init() {
-        if (sidebarCollapsed) sidebar.classList.add('collapsed');
-        if (isDarkMode) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        }
-        
-        userNameSpan.textContent = currentUser.name;
-        userRoleSpan.textContent = currentUser.role;
-        
-        // ========== ФИКС ДЛЯ МОБИЛОК ==========
-        if (window.innerWidth <= 768) {
-            sidebar.classList.remove('mobile-open');
-            document.body.classList.remove('menu-open');
-            
-            const header = document.querySelector('.wiki-header');
-            if (header) {
-                header.style.display = 'flex';
-                header.style.visibility = 'visible';
-            }
-            
-            const mobileBtn = document.getElementById('mobileMenuBtn');
-            if (mobileBtn) {
-                mobileBtn.style.display = 'block';
-                mobileBtn.style.visibility = 'visible';
-            }
-        }
-        
-        const initialPage = getPageFromURL();
-        loadPage(initialPage);
-        setupEventListeners();
-        
-        window.addEventListener('popstate', (event) => {
-            const pageId = event.state?.pageId || getPageFromURL();
-            if (pages[pageId]) {
-                loadPageNoHistory(pageId);
-            } else {
-                loadPageNoHistory('dashboard');
-            }
-        });
+   function init() {
+    if (sidebarCollapsed) sidebar.classList.add('collapsed');
+    if (isDarkMode) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
     }
+    
+    userNameSpan.textContent = currentUser.name;
+    userRoleSpan.textContent = currentUser.role;
+    
+    // ========== ФИКС ДЛЯ МОБИЛОК ==========
+    if (window.innerWidth <= 768) {
+        sidebar.classList.remove('mobile-open');
+        document.body.classList.remove('menu-open');
+        
+        const header = document.querySelector('.wiki-header');
+        if (header) {
+            header.style.display = 'flex';
+            header.style.visibility = 'visible';
+        }
+        
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        if (mobileBtn) {
+            mobileBtn.style.display = 'block';
+            mobileBtn.style.visibility = 'visible';
+        }
+    }
+    
+    // ========== ФИКС ДЛЯ ИСТОРИИ ==========
+    const currentHash = window.location.hash.slice(1);
+    if (!currentHash || !pages[currentHash]) {
+        window.history.replaceState({ pageId: 'dashboard' }, '', `${window.location.pathname}#dashboard`);
+    }
+    
+    const initialPage = getPageFromURL();
+    loadPage(initialPage);
+    setupEventListeners();
+    
+    window.addEventListener('popstate', (event) => {
+        const pageId = event.state?.pageId || getPageFromURL();
+        if (pages[pageId]) {
+            loadPageNoHistory(pageId);
+        } else {
+            loadPageNoHistory('dashboard');
+        }
+    });
+}
     
     function loadPageNoHistory(pageId) {
         const page = pages[pageId];
@@ -412,10 +418,9 @@
     }
     
     function loadPage(pageId) {
-    const newUrl = `${window.location.pathname}#${pageId}`;
-    window.history.pushState({ pageId: pageId }, '', newUrl);
-    loadPageNoHistory(pageId);
-}
+        updateURL(pageId);
+        loadPageNoHistory(pageId);
+    }
     
     function updateBreadcrumb(pageTitle) {
         breadcrumb.innerHTML = `<span>Вики</span><i class="fas fa-chevron-right"></i><span class="active">${pageTitle}</span>`;
@@ -515,16 +520,6 @@
                 document.body.classList.remove('menu-open');
             }
         });
-
-        document.querySelectorAll('.sidebar-nav ul li').forEach(item => {
-    item.addEventListener('click', (e) => {
-        const pageId = item.dataset.page;
-        if (pageId && pages[pageId]) {
-            const newUrl = `${window.location.pathname}#${pageId}`;
-            window.history.pushState({ pageId: pageId }, '', newUrl);
-        }
-    });
-});
     }
     
     init();
