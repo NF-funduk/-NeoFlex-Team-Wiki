@@ -125,102 +125,87 @@
         roles: {
             title: 'Роли и обязанности',
             content: `
-                <div class="soon-placeholder">
-                    <div class="soon-icon"><i class="fas fa-clock"></i></div>
-                    <h1>СКОРО</h1>
-                    <p>Раздел находится в разработке</p>
-                    <div class="soon-progress">
-                        <div class="progress-bar"></div>
+                <h1>Роли и обязанности</h1>
+                <p>Описание всех отделов и их функций</p>
+                
+                <div class="roles-grid-cards">
+                    <div class="role-card" data-page="moderation-details">
+                        <div class="role-card-icon"><i class="fas fa-gavel"></i></div>
+                        <div class="role-card-title">Модерация сервера</div>
+                        <div class="role-card-desc">Отвечает за порядок на игровых серверах, соблюдение правил игроками и оперативное реагирование на нарушения.</div>
+                    </div>
+                    
+                    <div class="role-card" data-page="support-details">
+                        <div class="role-card-icon"><i class="fas fa-headset"></i></div>
+                        <div class="role-card-title">Support</div>
+                        <div class="role-card-desc">Занимается обработкой обращений игроков, решением технических и игровых вопросов.</div>
+                    </div>
+                    
+                    <div class="role-card" data-page="discord-details">
+                        <div class="role-card-icon"><i class="fab fa-discord"></i></div>
+                        <div class="role-card-title">Discord</div>
+                        <div class="role-card-desc">Отвечает за порядок на Discord-сервере, управление ролями и правами, настройку каналов и ботов.</div>
+                    </div>
+                    
+                    <div class="role-card" data-page="non-game-details">
+                        <div class="role-card-icon"><i class="fas fa-tools"></i></div>
+                        <div class="role-card-title">Неигровые роли</div>
+                        <div class="role-card-desc">Включает позиции, не связанные напрямую с игровым процессом: аналитика, реклама и другие вспомогательные функции.</div>
                     </div>
                 </div>
             `
         },
         
-       'staff-list': {
-    title: 'Команда проекта',
-    content: `
-        <h1>Команда проекта NeoFlex</h1>
-        <p>Актуальный состав участников проекта</p>
+        'moderation-details': {
+            title: 'Модерация сервера',
+            content: `<div id="subpageContent"><div class="loading"><i class="fas fa-spinner fa-spin"></i> Загрузка...</div></div>`
+        },
         
-        <div class="team-grid" id="teamGrid">
-            <div class="loading"><i class="fas fa-spinner fa-spin"></i> Загрузка команды...</div>
-        </div>
-    `
-},
+        'support-details': {
+            title: 'Support',
+            content: `<div id="subpageContent"><div class="loading"><i class="fas fa-spinner fa-spin"></i> Загрузка...</div></div>`
+        },
+        
+        'discord-details': {
+            title: 'Discord',
+            content: `<div id="subpageContent"><div class="loading"><i class="fas fa-spinner fa-spin"></i> Загрузка...</div></div>`
+        },
+        
+        'non-game-details': {
+            title: 'Неигровые роли',
+            content: `<div id="subpageContent"><div class="loading"><i class="fas fa-spinner fa-spin"></i> Загрузка...</div></div>`
+        },
+        
+        'staff-list': {
+            title: 'Команда проекта',
+            content: `
+                <h1>Команда проекта NeoFlex</h1>
+                <p>Актуальный состав участников проекта</p>
+                <div class="team-grid" id="teamGrid">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Загрузка команды...</div>
+                </div>
+            `
+        },
         
         rules: {
             title: 'Правила',
-            content: `
-                <div class="soon-placeholder">
-                    <div class="soon-icon"><i class="fas fa-clock"></i></div>
-                    <h1>СКОРО</h1>
-                    <p>Раздел находится в разработке</p>
-                    <div class="soon-progress">
-                        <div class="progress-bar"></div>
-                    </div>
-                </div>
-            `
+            content: `<div class="soon-placeholder"><div class="soon-icon"><i class="fas fa-clock"></i></div><h1>СКОРО</h1><p>Раздел находится в разработке</p><div class="soon-progress"><div class="progress-bar"></div></div></div>`
         },
         
         'team-rules': {
             title: 'Правила состава',
-            content: `
-                <div class="soon-placeholder">
-                    <div class="soon-icon"><i class="fas fa-clock"></i></div>
-                    <h1>СКОРО</h1>
-                    <p>Раздел находится в разработке</p>
-                    <div class="soon-progress">
-                        <div class="progress-bar"></div>
-                    </div>
-                </div>
-            `
+            content: `<div class="soon-placeholder"><div class="soon-icon"><i class="fas fa-clock"></i></div><h1>СКОРО</h1><p>Раздел находится в разработке</p><div class="soon-progress"><div class="progress-bar"></div></div></div>`
         },
 
         resources: {
             title: 'Ресурсы',
-            content: `
-                <div class="soon-placeholder">
-                    <div class="soon-icon"><i class="fas fa-clock"></i></div>
-                    <h1>СКОРО</h1>
-                    <p>Раздел находится в разработке</p>
-                    <div class="soon-progress">
-                        <div class="progress-bar"></div>
-                    </div>
-                </div>
-            `
+            content: `<div class="soon-placeholder"><div class="soon-icon"><i class="fas fa-clock"></i></div><h1>СКОРО</h1><p>Раздел находится в разработке</p><div class="soon-progress"><div class="progress-bar"></div></div></div>`
         },
 
         faq: {
             title: 'FAQ',
-            content: `
-                <div class="soon-placeholder">
-                    <div class="soon-icon"><i class="fas fa-clock"></i></div>
-                    <h1>СКОРО</h1>
-                    <p>Раздел находится в разработке</p>
-                    <div class="soon-progress">
-                        <div class="progress-bar"></div>
-                    </div>
-                </div>
-            `
+            content: `<div class="soon-placeholder"><div class="soon-icon"><i class="fas fa-clock"></i></div><h1>СКОРО</h1><p>Раздел находится в разработке</p><div class="soon-progress"><div class="progress-bar"></div></div></div>`
         }
-    };
-    
-    // ========== ДАННЫЕ ==========
-    const teamData = {
-        roles: [
-            { name: '👑 Глава проекта', duties: 'Стратегия, управление, ключевые решения', requirements: 'Опыт управления, лидерские качества' },
-            { name: '💻 Разработчик', duties: 'Код, баги, новые функции, оптимизация', requirements: 'Знание языков, опыт' },
-            { name: '🎨 Дизайнер', duties: 'Интерфейсы, графика, брендинг', requirements: 'Портфолио, знание Figma' },
-            { name: '🎧 Саппорт', duties: 'Ответы на обращения, помощь игрокам', requirements: 'Коммуникабельность, знание проекта' },
-            { name: '🔨 Модератор', duties: 'Порядок на сервере, соблюдение правил', requirements: 'Стрессоустойчивость' }
-        ],
-        staff: [
-            { name: 'funduk', role: 'Глава проекта', avatar: '👑', discord: 'funduk', since: '2024' },
-            { name: 'Support Team', role: 'Служба поддержки', avatar: '🎧', discord: 'support', since: '2024' },
-            { name: 'Dev Team', role: 'Разработка', avatar: '💻', discord: 'dev', since: '2024' },
-            { name: 'Design Team', role: 'Дизайн', avatar: '🎨', discord: 'design', since: '2024' },
-            { name: 'Moderation Team', role: 'Модерация', avatar: '🔨', discord: 'mod', since: '2024' }
-        ]
     };
     
     // ========== DOM ЭЛЕМЕНТЫ ==========
@@ -242,58 +227,113 @@
         return div.innerHTML;
     }
     
-    function renderRolesTable() {
-        const rolesList = document.getElementById('rolesList');
-        if (!rolesList) return;
+    async function renderSubpage(pageId) {
+        const container = document.getElementById('subpageContent');
+        if (!container) return;
         
-        rolesList.innerHTML = teamData.roles.map(role => `
-            <tr>
-                <td>${escapeHtml(role.name)}</td>
-                <td>${escapeHtml(role.duties)}</td>
-                <td>${escapeHtml(role.requirements)}</td>
-            </tr>
-        `).join('');
-    }
-    
-   async function renderTeamList() {
-    const teamGrid = document.getElementById('teamGrid');
-    if (!teamGrid) return;
-    
-    try {
-        const response = await fetch('data/team.json?t=' + Date.now());
-        if (!response.ok) throw new Error('Файл не найден');
+        let jsonFile = '';
+        let title = '';
         
-        const data = await response.json();
-        const members = data.members;
-        
-        if (members.length === 0) {
-            teamGrid.innerHTML = '<div class="empty-state">Нет данных о команде</div>';
+        if (pageId === 'moderation-details') {
+            jsonFile = 'data/moderation.json';
+            title = 'Модерация сервера';
+        } else if (pageId === 'support-details') {
+            jsonFile = 'data/support.json';
+            title = 'Support';
+        } else if (pageId === 'discord-details') {
+            jsonFile = 'data/discord.json';
+            title = 'Discord';
+        } else {
+            container.innerHTML = '<div class="empty-state">Страница не найдена</div>';
             return;
         }
         
-        teamGrid.innerHTML = members.map(member => `
-            <div class="team-card">
-                <div class="team-left">
-                    <div class="team-role-icon">${escapeHtml(member.roleIcon)}</div>
-                    <div class="team-role">${escapeHtml(member.role)}</div>
-                    <div class="team-name">${escapeHtml(member.name)}</div>
-                    <div class="team-discord">
-                        <i class="fab fa-discord"></i>
-                        <span>${escapeHtml(member.discord)}</span>
+        try {
+            const response = await fetch(jsonFile + '?t=' + Date.now());
+            if (!response.ok) throw new Error('Файл не найден');
+            
+            const data = await response.json();
+            
+            let html = `
+                <h1>${title}</h1>
+                <p>Структура и обязанности отдела</p>
+                
+                <div class="moderation-head">
+                    <h2><i class="fas fa-user-shield"></i> Глава отдела</h2>
+                    <div class="head-card">
+                        <div class="head-role">${escapeHtml(data.head.role)}</div>
+                        <div class="head-name">${escapeHtml(data.head.name)}</div>
+                        <div class="head-discord">
+                            <i class="fab fa-discord"></i>
+                            <span>${escapeHtml(data.head.discord)}</span>
+                        </div>
                     </div>
                 </div>
-                <div class="team-divider"></div>
-                <div class="team-right">
-                    <div class="team-description">${escapeHtml(member.description)}</div>
-                </div>
-            </div>
-        `).join('');
-        
-    } catch (error) {
-        console.error('Ошибка загрузки команды:', error);
-        teamGrid.innerHTML = '<div class="empty-state">⚠️ Ошибка загрузки данных о команде. Убедитесь, что файл data/team.json существует.</div>';
+            `;
+            
+            for (const level of data.levels) {
+                html += `
+                    <div class="moderation-level">
+                        <h2><i class="fas fa-layer-group"></i> ${escapeHtml(level.name)}</h2>
+                        <div class="roles-grid-mod">
+                            ${level.roles.map(role => `
+                                <div class="mod-role-card">
+                                    <div class="mod-role-title">${escapeHtml(role.title)}</div>
+                                    <div class="mod-role-desc">${escapeHtml(role.description)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
+            
+        } catch (error) {
+            console.error('Ошибка загрузки:', error);
+            container.innerHTML = `<div class="empty-state">⚠️ Ошибка загрузки данных. Убедитесь, что файл ${jsonFile} существует.</div>`;
+        }
     }
-}
+    
+    async function renderTeamList() {
+        const teamGrid = document.getElementById('teamGrid');
+        if (!teamGrid) return;
+        
+        try {
+            const response = await fetch('data/team.json?t=' + Date.now());
+            if (!response.ok) throw new Error('Файл не найден');
+            
+            const data = await response.json();
+            const members = data.members;
+            
+            if (members.length === 0) {
+                teamGrid.innerHTML = '<div class="empty-state">Нет данных о команде</div>';
+                return;
+            }
+            
+            teamGrid.innerHTML = members.map(member => `
+                <div class="team-card">
+                    <div class="team-left">
+                        <div class="team-role-icon">${escapeHtml(member.roleIcon)}</div>
+                        <div class="team-role">${escapeHtml(member.role)}</div>
+                        <div class="team-name">${escapeHtml(member.name)}</div>
+                        <div class="team-discord">
+                            <i class="fab fa-discord"></i>
+                            <span>${escapeHtml(member.discord)}</span>
+                        </div>
+                    </div>
+                    <div class="team-divider"></div>
+                    <div class="team-right">
+                        <div class="team-description">${escapeHtml(member.description)}</div>
+                    </div>
+                </div>
+            `).join('');
+            
+        } catch (error) {
+            console.error('Ошибка загрузки команды:', error);
+            teamGrid.innerHTML = '<div class="empty-state">⚠️ Ошибка загрузки данных о команде.</div>';
+        }
+    }
     
     function renderNearestHoliday() {
         const today = new Date();
@@ -305,21 +345,11 @@
         for (const holiday of holidays) {
             const currentDate = new Date(currentYear, holiday.month, holiday.day);
             currentDate.setHours(0, 0, 0, 0);
-            
             const nextDate = new Date(currentYear + 1, holiday.month, holiday.day);
             nextDate.setHours(0, 0, 0, 0);
             
-            holidaysWithDates.push({
-                ...holiday,
-                dateObj: currentDate,
-                year: currentYear
-            });
-            
-            holidaysWithDates.push({
-                ...holiday,
-                dateObj: nextDate,
-                year: currentYear + 1
-            });
+            holidaysWithDates.push({ ...holiday, dateObj: currentDate, year: currentYear });
+            holidaysWithDates.push({ ...holiday, dateObj: nextDate, year: currentYear + 1 });
         }
         
         let nearestHoliday = null;
@@ -360,7 +390,7 @@
     }
     
     function setupCardNavigation() {
-        document.querySelectorAll('.card[data-page]').forEach(card => {
+        document.querySelectorAll('.card[data-page], .role-card[data-page]').forEach(card => {
             card.addEventListener('click', () => {
                 const pageId = card.dataset.page;
                 if (pageId && pages[pageId]) {
@@ -372,10 +402,7 @@
     
     // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
     function init() {
-        if (sidebarCollapsed) {
-            sidebar.classList.add('collapsed');
-        }
-        
+        if (sidebarCollapsed) sidebar.classList.add('collapsed');
         if (isDarkMode) {
             document.documentElement.setAttribute('data-theme', 'dark');
             themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
@@ -394,7 +421,6 @@
         
         currentPage = pageId;
         wikiContent.innerHTML = page.content;
-        
         updateBreadcrumb(page.title);
         
         document.querySelectorAll('.sidebar-nav ul li').forEach(item => {
@@ -404,24 +430,24 @@
             }
         });
         
-        if (pageId === 'dashboard') {
+        const isRolesSubpage = ['moderation-details', 'support-details', 'discord-details', 'non-game-details'].includes(pageId);
+        
+        if (isRolesSubpage) {
+            renderSubpage(pageId);
+        } else if (pageId === 'dashboard') {
             renderNearestHoliday();
             setupCardNavigation();
-        } else if (pageId === 'roles') {
-            renderRolesTable();
         } else if (pageId === 'staff-list') {
             renderTeamList();
+        } else if (pageId === 'roles') {
+            setupCardNavigation();
         }
         
         wikiContent.scrollTop = 0;
     }
     
     function updateBreadcrumb(pageTitle) {
-        breadcrumb.innerHTML = `
-            <span>Вики</span>
-            <i class="fas fa-chevron-right"></i>
-            <span class="active">${pageTitle}</span>
-        `;
+        breadcrumb.innerHTML = `<span>Вики</span><i class="fas fa-chevron-right"></i><span class="active">${pageTitle}</span>`;
     }
     
     function setupEventListeners() {
@@ -489,11 +515,7 @@
             
             navItems.forEach(item => {
                 const text = item.textContent.toLowerCase();
-                if (text.includes(query)) {
-                    item.style.display = '';
-                } else {
-                    item.style.display = 'none';
-                }
+                item.style.display = text.includes(query) ? '' : 'none';
             });
         });
         
