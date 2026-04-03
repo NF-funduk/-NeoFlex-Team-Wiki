@@ -605,6 +605,7 @@ p {
     padding: 20px;
     text-align: center;
     transition: var(--transition);
+    cursor: pointer;
 }
 
 .org-column:hover {
@@ -1572,5 +1573,343 @@ p {
     
     .wiki-sidebar.mobile-open .sidebar-toggle i {
         transform: rotate(0deg);
+    }
+}
+
+.dept-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 4000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.dept-modal-overlay.active {
+    display: flex;
+}
+
+.dept-modal-container {
+    background: var(--bg-primary);
+    border-radius: 24px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 85vh;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s ease;
+}
+
+.dept-modal-header {
+    background: var(--bg-sidebar);
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 24px 24px 0 0;
+}
+
+.dept-modal-header h2 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dept-modal-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+.dept-modal-close:hover {
+    background: var(--border-light);
+    color: var(--accent);
+}
+
+.dept-modal-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.dept-modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+}
+
+.dept-roles-btn {
+    background: var(--accent);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dept-roles-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+/* Стили для контента отдела */
+.dept-icon {
+    text-align: center;
+    font-size: 64px;
+    color: var(--accent);
+    margin-bottom: 20px;
+}
+
+.dept-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.dept-section {
+    margin-bottom: 24px;
+}
+
+.dept-section h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dept-section ul {
+    list-style: none;
+    padding-left: 8px;
+}
+
+.dept-section li {
+    padding: 8px 0;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.dept-section li:last-child {
+    border-bottom: none;
+}
+
+.dept-section li i {
+    color: var(--accent);
+    width: 20px;
+}
+
+@media (max-width: 600px) {
+    .dept-modal-container {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .dept-modal-header h2 {
+        font-size: 18px;
+    }
+    
+    .dept-icon {
+        font-size: 48px;
+    }
+    
+    .dept-description {
+        font-size: 14px;
+    }
+}
+
+.role-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 4000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.role-modal-overlay.active {
+    display: flex;
+}
+
+.role-modal-container {
+    background: var(--bg-primary);
+    border-radius: 24px;
+    width: 90%;
+    max-width: 550px;
+    max-height: 80vh;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s ease;
+}
+
+.role-modal-header {
+    background: var(--bg-sidebar);
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 24px 24px 0 0;
+}
+
+.role-modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.role-modal-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+.role-modal-close:hover {
+    background: var(--border-light);
+    color: var(--accent);
+}
+
+.role-modal-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.role-icon {
+    text-align: center;
+    font-size: 64px;
+    color: var(--accent);
+    margin-bottom: 20px;
+}
+
+.role-full-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.role-department {
+    font-size: 13px;
+    color: var(--accent);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.role-description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.role-subsection {
+    margin-bottom: 20px;
+}
+
+.role-subsection h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.role-subsection ul {
+    list-style: none;
+    padding-left: 8px;
+}
+
+.role-subsection li {
+    padding: 6px 0;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.role-subsection li:last-child {
+    border-bottom: none;
+}
+
+.role-subsection li i {
+    color: var(--accent);
+    width: 20px;
+}
+
+@media (max-width: 600px) {
+    .role-modal-container {
+        width: 95%;
+        max-height: 85vh;
+    }
+    
+    .role-icon {
+        font-size: 48px;
+    }
+    
+    .role-full-title {
+        font-size: 18px;
     }
 }
