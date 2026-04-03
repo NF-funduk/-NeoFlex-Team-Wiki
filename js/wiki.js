@@ -396,8 +396,83 @@
                 if (pageId && pages[pageId]) {
                     loadPage(pageId);
                 }
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('mobile-open');
+                    document.body.classList.remove('menu-open');
+                }
             });
         });
+    }
+    
+    // ========== НОВОСТИ ==========
+    async function loadNews() {
+    const container = document.getElementById('newsModalContent');
+    if (!container) return;
+    
+    try {
+        const response = await fetch('data/news.json?t=' + Date.now());
+        if (!response.ok) throw new Error('Файл не найден');
+        
+        const news = await response.json();
+        
+        if (news.length === 0) {
+            container.innerHTML = '<div class="news-empty">📭 Новостей пока нет</div>';
+            return;
+        }
+        
+        news.sort((a, b) => b.id - a.id);
+        
+        container.innerHTML = news.map(item => {
+            const date = new Date(item.date).toLocaleDateString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            
+            let badgeClass = 'update';
+            let badgeIcon = '🔄';
+            if (item.type === 'new') {
+                badgeClass = 'new';
+                badgeIcon = '✨';
+            } else if (item.type === 'fix') {
+                badgeClass = 'fix';
+                badgeIcon = '🐛';
+            }
+            
+            return `
+                <div class="news-item">
+                    <div class="news-header">
+                        <span class="news-title">${escapeHtml(item.title)}</span>
+                        <span class="news-badge ${badgeClass}">${badgeIcon} ${escapeHtml(item.type)}</span>
+                    </div>
+                    <div class="news-date">📅 ${date}</div>
+                    <div class="news-content">${escapeHtml(item.content)}</div>
+                    <div class="news-author"><i class="fas fa-user"></i> ${escapeHtml(item.author)}</div>
+                </div>
+            `;
+        }).join('');
+        
+    } catch (error) {
+        console.error('Ошибка загрузки новостей:', error);
+        container.innerHTML = '<div class="news-empty">⚠️ Ошибка загрузки новостей</div>';
+    }
+}
+    
+    function openNewsModal() {
+        const modal = document.getElementById('newsModal');
+        if (!modal) return;
+        
+        loadNews();
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeNewsModal() {
+        const modal = document.getElementById('newsModal');
+        if (!modal) return;
+        
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
     }
     
     // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
@@ -466,8 +541,20 @@
         
         const newsBtn = document.getElementById('newsBtn');
         if (newsBtn) {
-            newsBtn.addEventListener('click', () => {
-                alert('🚧 Раздел с новостями обновлений в разработке.');
+            newsBtn.addEventListener('click', openNewsModal);
+        }
+        
+        const newsModalClose = document.getElementById('newsModalClose');
+        if (newsModalClose) {
+            newsModalClose.addEventListener('click', closeNewsModal);
+        }
+        
+        const newsModal = document.getElementById('newsModal');
+        if (newsModal) {
+            newsModal.addEventListener('click', (e) => {
+                if (e.target === newsModal) {
+                    closeNewsModal();
+                }
             });
         }
         
@@ -541,9 +628,15 @@
         });
         
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && sidebar.classList.contains('mobile-open')) {
-                sidebar.classList.remove('mobile-open');
-                document.body.classList.remove('menu-open');
+            if (e.key === 'Escape') {
+                const newsModalEl = document.getElementById('newsModal');
+                if (newsModalEl && newsModalEl.classList.contains('active')) {
+                    closeNewsModal();
+                }
+                if (sidebar.classList.contains('mobile-open')) {
+                    sidebar.classList.remove('mobile-open');
+                    document.body.classList.remove('menu-open');
+                }
             }
         });
     }
