@@ -1970,3 +1970,66 @@ p {
         display: block !important;
     }
 }
+
+@media (max-width: 768px) {
+    .org-three-columns {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        gap: 15px !important;
+        padding: 10px 5px 20px 5px !important;
+        justify-content: flex-start !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    .org-three-columns .org-column {
+        flex: 0 0 220px !important;
+        min-width: 200px !important;
+        max-width: none !important;
+        margin-bottom: 0 !important;
+    }
+    
+    /* Стилизация скроллбара */
+    .org-three-columns::-webkit-scrollbar {
+        height: 6px;
+    }
+    
+    .org-three-columns::-webkit-scrollbar-track {
+        background: var(--bg-secondary);
+        border-radius: 3px;
+    }
+    
+    .org-three-columns::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
+    }
+    
+    .org-three-columns::-webkit-scrollbar-thumb:hover {
+        background: var(--accent);
+    }
+}
+
+@media (max-width: 480px) {
+    .org-three-columns .org-column {
+        flex: 0 0 180px !important;
+        min-width: 160px !important;
+        padding: 15px !important;
+    }
+    
+    .org-three-columns .dept-icon {
+        font-size: 32px !important;
+    }
+    
+    .org-three-columns .dept-name {
+        font-size: 13px !important;
+    }
+    
+    .org-three-columns .dept-leader i {
+        font-size: 20px !important;
+    }
+    
+    .org-three-columns .dept-leader span {
+        font-size: 11px !important;
+    }
+}
