@@ -180,7 +180,7 @@
             title: 'Команда проекта',
             content: `
                 <h1>Команда проекта NeoFlex</h1>
-                <p>Актуальный состав участников проекта</p>
+                <p>Актуальный состав руководства проекта</p>
                 <div class="team-grid" id="teamGrid">
                     <div class="loading"><i class="fas fa-spinner fa-spin"></i> Загрузка команды...</div>
                 </div>
