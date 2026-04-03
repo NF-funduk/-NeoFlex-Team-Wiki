@@ -1950,28 +1950,6 @@ p {
 }
 
 @media (max-width: 768px) {
-    .wiki-sidebar {
-        left: -280px;
-    }
-    
-    .wiki-sidebar.mobile-open {
-        left: 0;
-    }
-    
-    .wiki-header {
-        position: sticky;
-        top: 0;
-        z-index: 1010;
-        background: var(--bg-primary);
-        display: flex !important;
-    }
-    
-    .mobile-menu-btn {
-        display: block !important;
-    }
-}
-
-@media (max-width: 768px) {
     .org-three-columns {
         display: flex !important;
         flex-direction: row !important;
@@ -1984,52 +1962,32 @@ p {
     }
     
     .org-three-columns .org-column {
-        flex: 0 0 220px !important;
+        flex: 0 0 auto !important;
+        width: 220px !important;
         min-width: 200px !important;
         max-width: none !important;
         margin-bottom: 0 !important;
     }
     
-    /* Стилизация скроллбара */
     .org-three-columns::-webkit-scrollbar {
-        height: 6px;
+        height: 6px !important;
     }
     
     .org-three-columns::-webkit-scrollbar-track {
-        background: var(--bg-secondary);
-        border-radius: 3px;
+        background: var(--bg-secondary) !important;
+        border-radius: 3px !important;
     }
     
     .org-three-columns::-webkit-scrollbar-thumb {
-        background: var(--border);
-        border-radius: 3px;
-    }
-    
-    .org-three-columns::-webkit-scrollbar-thumb:hover {
-        background: var(--accent);
+        background: var(--border) !important;
+        border-radius: 3px !important;
     }
 }
 
 @media (max-width: 480px) {
     .org-three-columns .org-column {
-        flex: 0 0 180px !important;
+        width: 180px !important;
         min-width: 160px !important;
         padding: 15px !important;
-    }
-    
-    .org-three-columns .dept-icon {
-        font-size: 32px !important;
-    }
-    
-    .org-three-columns .dept-name {
-        font-size: 13px !important;
-    }
-    
-    .org-three-columns .dept-leader i {
-        font-size: 20px !important;
-    }
-    
-    .org-three-columns .dept-leader span {
-        font-size: 11px !important;
     }
 }
