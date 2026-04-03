@@ -412,9 +412,10 @@
     }
     
     function loadPage(pageId) {
-        updateURL(pageId);
-        loadPageNoHistory(pageId);
-    }
+    const newUrl = `${window.location.pathname}#${pageId}`;
+    window.history.pushState({ pageId: pageId }, '', newUrl);
+    loadPageNoHistory(pageId);
+}
     
     function updateBreadcrumb(pageTitle) {
         breadcrumb.innerHTML = `<span>Вики</span><i class="fas fa-chevron-right"></i><span class="active">${pageTitle}</span>`;
@@ -514,6 +515,16 @@
                 document.body.classList.remove('menu-open');
             }
         });
+
+        document.querySelectorAll('.sidebar-nav ul li').forEach(item => {
+    item.addEventListener('click', (e) => {
+        const pageId = item.dataset.page;
+        if (pageId && pages[pageId]) {
+            const newUrl = `${window.location.pathname}#${pageId}`;
+            window.history.pushState({ pageId: pageId }, '', newUrl);
+        }
+    });
+});
     }
     
     init();
