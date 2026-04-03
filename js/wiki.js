@@ -180,7 +180,7 @@
             title: 'Команда проекта',
             content: `
                 <h1>Команда проекта NeoFlex</h1>
-                <p>Актуальный состав руководства проекта</p>
+                <p>Актуальный состав участников проекта</p>
                 <div class="team-grid" id="teamGrid">
                     <div class="loading"><i class="fas fa-spinner fa-spin"></i> Загрузка команды...</div>
                 </div>
@@ -451,86 +451,101 @@
     }
     
     function setupEventListeners() {
-        document.querySelectorAll('.sidebar-nav ul li').forEach(item => {
-            item.addEventListener('click', () => {
-                const pageId = item.dataset.page;
-                if (pageId && pages[pageId]) {
-                    loadPage(pageId);
-                }
-                if (window.innerWidth <= 768) {
-                    sidebar.classList.remove('mobile-open');
-                }
-            });
+    document.querySelectorAll('.sidebar-nav ul li').forEach(item => {
+        item.addEventListener('click', () => {
+            const pageId = item.dataset.page;
+            if (pageId && pages[pageId]) {
+                loadPage(pageId);
+            }
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('mobile-open');
+                document.body.classList.remove('menu-open');
+            }
         });
-        
-        sidebarToggle.addEventListener('click', () => {
+            const newsBtn = document.getElementById('newsBtn');
+        if (newsBtn) {
+            newsBtn.addEventListener('click', () => {
+            alert('🚧 Раздел с новостями обновлений в разработке.');
+        });
+    }
+    });
+    
+    sidebarToggle.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove('mobile-open');
+            document.body.classList.remove('menu-open');
+        } else {
             sidebarCollapsed = !sidebarCollapsed;
             sidebar.classList.toggle('collapsed');
             localStorage.setItem('sidebarCollapsed', sidebarCollapsed);
-        });
+        }
+    });
+    
+    mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('mobile-open');
+        document.body.classList.toggle('menu-open');
+    });
+    
+    themeToggle.addEventListener('click', () => {
+        isDarkMode = !isDarkMode;
+        if (isDarkMode) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            localStorage.setItem('darkMode', 'true');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            localStorage.setItem('darkMode', 'false');
+        }
+    });
+    
+    fullscreenBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+            fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+        } else {
+            document.exitFullscreen();
+            fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+        }
+    });
+    
+    document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement) {
+            fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+        } else {
+            fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+        }
+    });
+    
+    wikiSearch.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        const navItems = document.querySelectorAll('.sidebar-nav ul li');
         
-        mobileMenuBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('mobile-open');
-        });
+        if (query.length === 0) {
+            navItems.forEach(item => item.style.display = '');
+            return;
+        }
         
-        themeToggle.addEventListener('click', () => {
-            isDarkMode = !isDarkMode;
-            if (isDarkMode) {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                localStorage.setItem('darkMode', 'true');
-            } else {
-                document.documentElement.removeAttribute('data-theme');
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                localStorage.setItem('darkMode', 'false');
-            }
+        navItems.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(query) ? '' : 'none';
         });
-        
-        fullscreenBtn.addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
-            } else {
-                document.exitFullscreen();
-                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
-            }
-        });
-        
-        document.addEventListener('fullscreenchange', () => {
-            if (document.fullscreenElement) {
-                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
-            } else {
-                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
-            }
-        });
-        
-        wikiSearch.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            const navItems = document.querySelectorAll('.sidebar-nav ul li');
-            
-            if (query.length === 0) {
-                navItems.forEach(item => item.style.display = '');
-                return;
-            }
-            
-            navItems.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                item.style.display = text.includes(query) ? '' : 'none';
-            });
-        });
-        
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                sidebar.classList.remove('mobile-open');
-            }
-        });
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && sidebar.classList.contains('mobile-open')) {
-                sidebar.classList.remove('mobile-open');
-            }
-        });
-    }
+    });
+    
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            sidebar.classList.remove('mobile-open');
+            document.body.classList.remove('menu-open');
+        }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sidebar.classList.contains('mobile-open')) {
+            sidebar.classList.remove('mobile-open');
+            document.body.classList.remove('menu-open');
+        }
+    });
+}
     
     init();
 })();
