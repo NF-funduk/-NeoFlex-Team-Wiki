@@ -1564,3 +1564,13 @@ p {
         padding: 16px;
     }
 }
+
+@media (max-width: 768px) {
+    .wiki-sidebar:not(.mobile-open) .sidebar-toggle i {
+        transform: rotate(180deg);
+    }
+    
+    .wiki-sidebar.mobile-open .sidebar-toggle i {
+        transform: rotate(0deg);
+    }
+}

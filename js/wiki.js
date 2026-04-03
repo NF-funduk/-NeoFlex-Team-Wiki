@@ -406,57 +406,57 @@
     
     // ========== НОВОСТИ ==========
     async function loadNews() {
-    const container = document.getElementById('newsModalContent');
-    if (!container) return;
-    
-    try {
-        const response = await fetch('data/news.json?t=' + Date.now());
-        if (!response.ok) throw new Error('Файл не найден');
+        const container = document.getElementById('newsModalContent');
+        if (!container) return;
         
-        const news = await response.json();
-        
-        if (news.length === 0) {
-            container.innerHTML = '<div class="news-empty">📭 Новостей пока нет</div>';
-            return;
-        }
-        
-        news.sort((a, b) => b.id - a.id);
-        
-        container.innerHTML = news.map(item => {
-            const date = new Date(item.date).toLocaleDateString('ru-RU', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            });
+        try {
+            const response = await fetch('data/news.json?t=' + Date.now());
+            if (!response.ok) throw new Error('Файл не найден');
             
-            let badgeClass = 'update';
-            let badgeIcon = '🔄';
-            if (item.type === 'new') {
-                badgeClass = 'new';
-                badgeIcon = '✨';
-            } else if (item.type === 'fix') {
-                badgeClass = 'fix';
-                badgeIcon = '🐛';
+            const news = await response.json();
+            
+            if (news.length === 0) {
+                container.innerHTML = '<div class="news-empty">📭 Новостей пока нет</div>';
+                return;
             }
             
-            return `
-                <div class="news-item">
-                    <div class="news-header">
-                        <span class="news-title">${escapeHtml(item.title)}</span>
-                        <span class="news-badge ${badgeClass}">${badgeIcon} ${escapeHtml(item.type)}</span>
+            news.sort((a, b) => b.id - a.id);
+            
+            container.innerHTML = news.map(item => {
+                const date = new Date(item.date).toLocaleDateString('ru-RU', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                
+                let badgeClass = 'update';
+                let badgeIcon = '🔄';
+                if (item.type === 'new') {
+                    badgeClass = 'new';
+                    badgeIcon = '✨';
+                } else if (item.type === 'fix') {
+                    badgeClass = 'fix';
+                    badgeIcon = '🐛';
+                }
+                
+                return `
+                    <div class="news-item">
+                        <div class="news-header">
+                            <span class="news-title">${escapeHtml(item.title)}</span>
+                            <span class="news-badge ${badgeClass}">${badgeIcon} ${escapeHtml(item.type)}</span>
+                        </div>
+                        <div class="news-date">📅 ${date}</div>
+                        <div class="news-content">${escapeHtml(item.content)}</div>
+                        <div class="news-author"><i class="fas fa-user"></i> ${escapeHtml(item.author)}</div>
                     </div>
-                    <div class="news-date">📅 ${date}</div>
-                    <div class="news-content">${escapeHtml(item.content)}</div>
-                    <div class="news-author"><i class="fas fa-user"></i> ${escapeHtml(item.author)}</div>
-                </div>
-            `;
-        }).join('');
-        
-    } catch (error) {
-        console.error('Ошибка загрузки новостей:', error);
-        container.innerHTML = '<div class="news-empty">⚠️ Ошибка загрузки новостей</div>';
+                `;
+            }).join('');
+            
+        } catch (error) {
+            console.error('Ошибка загрузки новостей:', error);
+            container.innerHTML = '<div class="news-empty">⚠️ Ошибка загрузки новостей</div>';
+        }
     }
-}
     
     function openNewsModal() {
         const modal = document.getElementById('newsModal');
@@ -538,12 +538,12 @@
                 }
             });
         });
-        
+
         const newsBtn = document.getElementById('newsBtn');
         if (newsBtn) {
             newsBtn.addEventListener('click', openNewsModal);
         }
-        
+
         const newsModalClose = document.getElementById('newsModalClose');
         if (newsModalClose) {
             newsModalClose.addEventListener('click', closeNewsModal);
@@ -560,8 +560,13 @@
         
         sidebarToggle.addEventListener('click', () => {
             if (window.innerWidth <= 768) {
-                sidebar.classList.remove('mobile-open');
-                document.body.classList.remove('menu-open');
+                if (sidebar.classList.contains('mobile-open')) {
+                    sidebar.classList.remove('mobile-open');
+                    document.body.classList.remove('menu-open');
+                } else {
+                    sidebar.classList.add('mobile-open');
+                    document.body.classList.add('menu-open');
+                }
             } else {
                 sidebarCollapsed = !sidebarCollapsed;
                 sidebar.classList.toggle('collapsed');
@@ -619,14 +624,14 @@
                 item.style.display = text.includes(query) ? '' : 'none';
             });
         });
-        
+
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
                 sidebar.classList.remove('mobile-open');
                 document.body.classList.remove('menu-open');
             }
         });
-        
+
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 const newsModalEl = document.getElementById('newsModal');
