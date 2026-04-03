@@ -1948,3 +1948,25 @@ p {
         z-index: 1010;
     }
 }
+
+@media (max-width: 768px) {
+    .wiki-sidebar {
+        left: -280px;
+    }
+    
+    .wiki-sidebar.mobile-open {
+        left: 0;
+    }
+    
+    .wiki-header {
+        position: sticky;
+        top: 0;
+        z-index: 1010;
+        background: var(--bg-primary);
+        display: flex !important;
+    }
+    
+    .mobile-menu-btn {
+        display: block !important;
+    }
+}

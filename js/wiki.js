@@ -227,93 +227,18 @@
         return div.innerHTML;
     }
     
-    async function renderSubpage(pageId) {
-    const container = document.getElementById('subpageContent');
-    if (!container) return;
-    
-    let jsonFile = '';
-    let rolesFile = '';
-    let title = '';
-    
-    if (pageId === 'moderation-details') {
-        jsonFile = 'data/moderation.json';
-        rolesFile = 'data/roles/moderation.json';
-        title = 'Модерация сервера';
-    } else if (pageId === 'support-details') {
-        jsonFile = 'data/support.json';
-        rolesFile = 'data/roles/support.json';
-        title = 'Support';
-    } else if (pageId === 'discord-details') {
-        jsonFile = 'data/discord.json';
-        rolesFile = 'data/roles/discord.json';
-        title = 'Discord';
-    } else {
-        container.innerHTML = '<div class="empty-state">Страница не найдена</div>';
-        return;
+    // ========== ФУНКЦИИ ДЛЯ РАБОТЫ С URL ==========
+    function updateURL(pageId) {
+        const newUrl = `${window.location.pathname}#${pageId}`;
+        window.history.pushState({ pageId: pageId }, '', newUrl);
     }
     
-    try {
-        const [deptResponse, rolesResponse] = await Promise.all([
-            fetch(jsonFile + '?t=' + Date.now()),
-            fetch(rolesFile + '?t=' + Date.now())
-        ]);
-        
-        if (!deptResponse.ok) throw new Error('Файл отдела не найден');
-        if (!rolesResponse.ok) throw new Error('Файл ролей не найден');
-        
-        const deptData = await deptResponse.json();
-        const rolesData = await rolesResponse.json();
-        
-        let html = `
-            <h1>${title}</h1>
-            <p>Структура и обязанности отдела</p>
-            
-            <div class="moderation-head">
-                <h2><i class="fas fa-user-shield"></i> Глава отдела</h2>
-                <div class="head-card">
-                    <div class="head-role">${escapeHtml(deptData.head.role)}</div>
-                    <div class="head-name">${escapeHtml(deptData.head.name)}</div>
-                    <div class="head-discord">
-                        <i class="fab fa-discord"></i>
-                        <span>${escapeHtml(deptData.head.discord)}</span>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        html += `
-            <div class="moderation-level">
-                <h2><i class="fas fa-layer-group"></i> Все роли отдела</h2>
-                <div class="roles-grid-mod">
-                    ${rolesData.roles.map(role => `
-                        <div class="mod-role-card" data-role-id="${escapeHtml(role.id)}">
-                            <div class="mod-role-title">${escapeHtml(role.title)}</div>
-                            <div class="mod-role-desc">${escapeHtml(role.description)}</div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-        
-        container.innerHTML = html;
-        
-        document.querySelectorAll('.mod-role-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const roleId = card.dataset.roleId;
-                const role = rolesData.roles.find(r => r.id === roleId);
-                if (role) {
-                    openRoleModal(role, rolesData.department, rolesData.icon);
-                }
-            });
-        });
-        
-    } catch (error) {
-        console.error('Ошибка загрузки:', error);
-        container.innerHTML = `<div class="empty-state">⚠️ Ошибка загрузки данных. Убедитесь, что файлы существуют.</div>`;
+    function getPageFromURL() {
+        const hash = window.location.hash.slice(1);
+        return hash && pages[hash] ? hash : 'dashboard';
     }
-}
     
+    // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
     function renderNearestHoliday() {
         const today = new Date();
         const currentYear = today.getFullYear();
@@ -386,7 +311,6 @@
     function bindDeptCardsClick() {
         const deptColumns = document.querySelectorAll('.org-column');
         deptColumns.forEach(column => {
-            // Удаляем старые обработчики, чтобы не дублировать
             column.removeEventListener('click', column._deptHandler);
             
             const handler = () => {
@@ -400,175 +324,10 @@
         });
     }
     
-    // ========== НОВОСТИ ==========
-    async function loadNews() {
-        const container = document.getElementById('newsModalContent');
-        if (!container) return;
-        
-        try {
-            const response = await fetch('data/news.json?t=' + Date.now());
-            if (!response.ok) throw new Error('Файл не найден');
-            
-            const news = await response.json();
-            
-            if (news.length === 0) {
-                container.innerHTML = '<div class="news-empty">📭 Новостей пока нет</div>';
-                return;
-            }
-            
-            news.sort((a, b) => b.id - a.id);
-            
-            container.innerHTML = news.map(item => {
-                const date = new Date(item.date).toLocaleDateString('ru-RU', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                });
-                
-                let badgeClass = 'update';
-                let badgeIcon = '🔄';
-                if (item.type === 'new') {
-                    badgeClass = 'new';
-                    badgeIcon = '✨';
-                } else if (item.type === 'fix') {
-                    badgeClass = 'fix';
-                    badgeIcon = '🐛';
-                }
-                
-                return `
-                    <div class="news-item">
-                        <div class="news-header">
-                            <span class="news-title">${escapeHtml(item.title)}</span>
-                            <span class="news-badge ${badgeClass}">${badgeIcon} ${escapeHtml(item.type)}</span>
-                        </div>
-                        <div class="news-date">📅 ${date}</div>
-                        <div class="news-content">${escapeHtml(item.content)}</div>
-                        <div class="news-author"><i class="fas fa-user"></i> ${escapeHtml(item.author)}</div>
-                    </div>
-                `;
-            }).join('');
-            
-        } catch (error) {
-            console.error('Ошибка загрузки новостей:', error);
-            container.innerHTML = '<div class="news-empty">⚠️ Ошибка загрузки новостей</div>';
-        }
+    // ========== ЗАГЛУШКИ ДЛЯ МОДАЛЬНЫХ ОКОН (ВРЕМЕННО) ==========
+    function openDeptModal(dept) {
+        alert(`Модальное окно для отдела "${dept}" в разработке`);
     }
-    
-    function openNewsModal() {
-        const modal = document.getElementById('newsModal');
-        if (!modal) return;
-        
-        loadNews();
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-    
-    function closeNewsModal() {
-        const modal = document.getElementById('newsModal');
-        if (!modal) return;
-        
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-    
-    // ========== МОДАЛЬНОЕ ОКНО ОТДЕЛА ==========
-    async function loadDepartmentModal(department) {
-    const container = document.getElementById('deptModalContent');
-    const titleSpan = document.getElementById('deptModalTitle');
-    if (!container) return;
-    
-    let jsonFile = '';
-    let iconClass = '';
-    let displayTitle = '';
-    
-    if (department === 'moderation') {
-    jsonFile = 'data/departments/moderation.json';
-    iconClass = 'fas fa-gavel';
-    displayTitle = 'Модерация сервера';
-} else if (department === 'support') {
-    jsonFile = 'data/departments/support.json';
-    iconClass = 'fas fa-headset';
-    displayTitle = 'Support';
-} else if (department === 'discord') {
-    jsonFile = 'data/departments/discord.json';
-    iconClass = 'fab fa-discord';
-    displayTitle = 'Discord';
-}
-    
-    titleSpan.innerHTML = `<i class="${iconClass}"></i> ${displayTitle}`;
-    
-    try {
-        const response = await fetch(jsonFile + '?t=' + Date.now());
-        if (!response.ok) throw new Error('Файл не найден');
-        
-        const data = await response.json();
-        
-        const html = `
-            <div class="dept-icon"><i class="${iconClass}"></i></div>
-            <div class="dept-description">${escapeHtml(data.description)}</div>
-            
-            <div class="dept-section">
-                <h3><i class="fas fa-tasks"></i> Чем занимается отдел</h3>
-                <ul>
-                    ${data.responsibilities.map(item => `<li><i class="fas fa-check-circle"></i> ${escapeHtml(item)}</li>`).join('')}
-                </ul>
-            </div>
-            
-            <div class="dept-section">
-                <h3><i class="fas fa-star"></i> Навыки и качества</h3>
-                <ul>
-                    ${data.skills.map(item => `<li><i class="fas fa-gem"></i> ${escapeHtml(item)}</li>`).join('')}
-                </ul>
-            </div>
-            
-            <div class="dept-section">
-                <h3><i class="fas fa-clipboard-list"></i> Требования к кандидатам</h3>
-                <ul>
-                    ${data.requirements.map(item => `<li><i class="fas fa-shield-alt"></i> ${escapeHtml(item)}</li>`).join('')}
-                </ul>
-            </div>
-        `;
-        
-        container.innerHTML = html;
-        
-        window.currentDepartment = department;
-        
-    } catch (error) {
-        console.error('Ошибка загрузки:', error);
-        container.innerHTML = '<div class="empty-state">⚠️ Ошибка загрузки данных об отделе</div>';
-    }
-}
-    
-    function openDeptModal(department) {
-        const modal = document.getElementById('deptModal');
-        if (!modal) return;
-        
-        loadDepartmentModal(department);
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-    
-    function closeDeptModal() {
-        const modal = document.getElementById('deptModal');
-        if (!modal) return;
-        
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-    
-    function goToRolesPage() {
-    closeDeptModal();
-    
-    if (window.currentDepartment === 'moderation') {
-        loadPage('moderation-details');
-    } else if (window.currentDepartment === 'support') {
-        loadPage('support-details');
-    } else if (window.currentDepartment === 'discord') {
-        loadPage('discord-details');
-    } else {
-        loadPage('roles');
-    }
-}
     
     // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
     function init() {
@@ -581,11 +340,39 @@
         userNameSpan.textContent = currentUser.name;
         userRoleSpan.textContent = currentUser.role;
         
-        loadPage(currentPage);
+        // ========== ФИКС ДЛЯ МОБИЛОК ==========
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove('mobile-open');
+            document.body.classList.remove('menu-open');
+            
+            const header = document.querySelector('.wiki-header');
+            if (header) {
+                header.style.display = 'flex';
+                header.style.visibility = 'visible';
+            }
+            
+            const mobileBtn = document.getElementById('mobileMenuBtn');
+            if (mobileBtn) {
+                mobileBtn.style.display = 'block';
+                mobileBtn.style.visibility = 'visible';
+            }
+        }
+        
+        const initialPage = getPageFromURL();
+        loadPage(initialPage);
         setupEventListeners();
+        
+        window.addEventListener('popstate', (event) => {
+            const pageId = event.state?.pageId || getPageFromURL();
+            if (pages[pageId]) {
+                loadPageNoHistory(pageId);
+            } else {
+                loadPageNoHistory('dashboard');
+            }
+        });
     }
     
-    function loadPage(pageId) {
+    function loadPageNoHistory(pageId) {
         const page = pages[pageId];
         if (!page) return;
         
@@ -603,12 +390,18 @@
         const isRolesSubpage = ['moderation-details', 'support-details', 'discord-details', 'non-game-details'].includes(pageId);
         
         if (isRolesSubpage) {
-            renderSubpage(pageId);
+            const container = document.getElementById('subpageContent');
+            if (container) {
+                container.innerHTML = '<div class="empty-state">Страница в разработке</div>';
+            }
         } else if (pageId === 'dashboard') {
             renderNearestHoliday();
             setupCardNavigation();
         } else if (pageId === 'staff-list') {
-            renderTeamList();
+            const teamGrid = document.getElementById('teamGrid');
+            if (teamGrid) {
+                teamGrid.innerHTML = '<div class="empty-state">Команда проекта - в разработке</div>';
+            }
         } else if (pageId === 'roles') {
             setupCardNavigation();
         } else if (pageId === 'team-structure') {
@@ -618,291 +411,110 @@
         wikiContent.scrollTop = 0;
     }
     
+    function loadPage(pageId) {
+        updateURL(pageId);
+        loadPageNoHistory(pageId);
+    }
+    
     function updateBreadcrumb(pageTitle) {
         breadcrumb.innerHTML = `<span>Вики</span><i class="fas fa-chevron-right"></i><span class="active">${pageTitle}</span>`;
     }
     
     function setupEventListeners() {
-    const navItems = document.querySelectorAll('.sidebar-nav ul li');
-    navItems.forEach(item => {
-        item.removeEventListener('click', item._clickHandler);
+        document.querySelectorAll('.sidebar-nav ul li').forEach(item => {
+            item.addEventListener('click', () => {
+                const pageId = item.dataset.page;
+                if (pageId && pages[pageId]) {
+                    loadPage(pageId);
+                }
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('mobile-open');
+                    document.body.classList.remove('menu-open');
+                }
+            });
+        });
         
-        const handler = () => {
-            const pageId = item.dataset.page;
-            if (pageId && pages[pageId]) {
-                loadPage(pageId);
-            }
+        sidebarToggle.addEventListener('click', () => {
             if (window.innerWidth <= 768) {
-                sidebar.classList.remove('mobile-open');
-                document.body.classList.remove('menu-open');
-            }
-        };
-        item._clickHandler = handler;
-        item.addEventListener('click', handler);
-    });
-    
-    const roleModalClose = document.getElementById('roleModalClose');
-    if (roleModalClose) {
-        roleModalClose.addEventListener('click', closeRoleModal);
-    }
-    
-    const roleModal = document.getElementById('roleModal');
-    if (roleModal) {
-        roleModal.addEventListener('click', (e) => {
-            if (e.target === roleModal) {
-                closeRoleModal();
-            }
-        });
-    }
-    
-    const deptModalClose = document.getElementById('deptModalClose');
-    if (deptModalClose) {
-        deptModalClose.addEventListener('click', closeDeptModal);
-    }
-
-    const deptModal = document.getElementById('deptModal');
-    if (deptModal) {
-        deptModal.addEventListener('click', (e) => {
-            if (e.target === deptModal) {
-                closeDeptModal();
-            }
-        });
-    }
-    
-    const deptRolesBtn = document.getElementById('deptRolesBtn');
-    if (deptRolesBtn) {
-        deptRolesBtn.addEventListener('click', goToRolesPage);
-    }
-    
-    const newsBtn = document.getElementById('newsBtn');
-    if (newsBtn) {
-        newsBtn.addEventListener('click', openNewsModal);
-    }
-
-    const newsModalClose = document.getElementById('newsModalClose');
-    if (newsModalClose) {
-        newsModalClose.addEventListener('click', closeNewsModal);
-    }
-    
-    const newsModal = document.getElementById('newsModal');
-    if (newsModal) {
-        newsModal.addEventListener('click', (e) => {
-            if (e.target === newsModal) {
-                closeNewsModal();
-            }
-        });
-    }
-    
-    sidebarToggle.addEventListener('click', () => {
-        if (window.innerWidth <= 768) {
-            if (sidebar.classList.contains('mobile-open')) {
-                sidebar.classList.remove('mobile-open');
-                document.body.classList.remove('menu-open');
+                if (sidebar.classList.contains('mobile-open')) {
+                    sidebar.classList.remove('mobile-open');
+                    document.body.classList.remove('menu-open');
+                } else {
+                    sidebar.classList.add('mobile-open');
+                    document.body.classList.add('menu-open');
+                }
             } else {
-                sidebar.classList.add('mobile-open');
-                document.body.classList.add('menu-open');
+                sidebarCollapsed = !sidebarCollapsed;
+                sidebar.classList.toggle('collapsed');
+                localStorage.setItem('sidebarCollapsed', sidebarCollapsed);
             }
-        } else {
-            sidebarCollapsed = !sidebarCollapsed;
-            sidebar.classList.toggle('collapsed');
-            localStorage.setItem('sidebarCollapsed', sidebarCollapsed);
-        }
-    });
-    
-    mobileMenuBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('mobile-open');
-        document.body.classList.toggle('menu-open');
-    });
-    
-    themeToggle.addEventListener('click', () => {
-        isDarkMode = !isDarkMode;
-        if (isDarkMode) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-            localStorage.setItem('darkMode', 'true');
-        } else {
-            document.documentElement.removeAttribute('data-theme');
-            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-            localStorage.setItem('darkMode', 'false');
-        }
-    });
-    
-    fullscreenBtn.addEventListener('click', () => {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen();
-            fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
-        } else {
-            document.exitFullscreen();
-            fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
-        }
-    });
-    
-    document.addEventListener('fullscreenchange', () => {
-        if (document.fullscreenElement) {
-            fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
-        } else {
-            fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
-        }
-    });
-    
-    wikiSearch.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase().trim();
-        const navItemsList = document.querySelectorAll('.sidebar-nav ul li');
-        
-        if (query.length === 0) {
-            navItemsList.forEach(item => item.style.display = '');
-            return;
-        }
-        
-        navItemsList.forEach(item => {
-            const text = item.textContent.toLowerCase();
-            item.style.display = text.includes(query) ? '' : 'none';
         });
-    });
-    
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 768) {
-            sidebar.classList.remove('mobile-open');
-            document.body.classList.remove('menu-open');
-        }
-    });
-    
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            const newsModalEl = document.getElementById('newsModal');
-            if (newsModalEl && newsModalEl.classList.contains('active')) {
-                closeNewsModal();
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('mobile-open');
+            document.body.classList.toggle('menu-open');
+        });
+        
+        themeToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            if (isDarkMode) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('darkMode', 'false');
             }
-            const deptModalEl = document.getElementById('deptModal');
-            if (deptModalEl && deptModalEl.classList.contains('active')) {
-                closeDeptModal();
+        });
+        
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                document.exitFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
             }
-            const roleModalEl = document.getElementById('roleModal');
-            if (roleModalEl && roleModalEl.classList.contains('active')) {
-                closeRoleModal();
+        });
+        
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
             }
-            if (sidebar.classList.contains('mobile-open')) {
+        });
+        
+        wikiSearch.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const navItems = document.querySelectorAll('.sidebar-nav ul li');
+            
+            if (query.length === 0) {
+                navItems.forEach(item => item.style.display = '');
+                return;
+            }
+            
+            navItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+        
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
                 sidebar.classList.remove('mobile-open');
                 document.body.classList.remove('menu-open');
             }
-        }
-    });
-}
-
-    async function renderTeamList() {
-    const teamGrid = document.getElementById('teamGrid');
-    if (!teamGrid) return;
-    
-    try {
-        const response = await fetch('data/team.json?t=' + Date.now());
-        if (!response.ok) throw new Error('Файл не найден');
+        });
         
-        const data = await response.json();
-        const members = data.members;
-        
-        if (members.length === 0) {
-            teamGrid.innerHTML = '<div class="empty-state">Нет данных о команде</div>';
-            return;
-        }
-        
-        teamGrid.innerHTML = members.map(member => `
-            <div class="team-card">
-                <div class="team-left">
-                    <div class="team-role-icon">${escapeHtml(member.roleIcon)}</div>
-                    <div class="team-role">${escapeHtml(member.role)}</div>
-                    <div class="team-name">${escapeHtml(member.name)}</div>
-                    <div class="team-discord">
-                        <i class="fab fa-discord"></i>
-                        <span>${escapeHtml(member.discord)}</span>
-                    </div>
-                </div>
-                <div class="team-divider"></div>
-                <div class="team-right">
-                    <div class="team-description">${escapeHtml(member.description)}</div>
-                </div>
-            </div>
-        `).join('');
-        
-    } catch (error) {
-        console.error('Ошибка загрузки команды:', error);
-        teamGrid.innerHTML = '<div class="empty-state">⚠️ Ошибка загрузки данных о команде.</div>';
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar.classList.contains('mobile-open')) {
+                sidebar.classList.remove('mobile-open');
+                document.body.classList.remove('menu-open');
+            }
+        });
     }
-}
-
-    // ========== МОДАЛЬНОЕ ОКНО РОЛИ ==========
-async function loadRoleModal(roleData) {
-    const container = document.getElementById('roleModalContent');
-    const titleSpan = document.getElementById('roleModalTitle');
-    if (!container) return;
-    
-    titleSpan.innerHTML = `<i class="${roleData.icon}"></i> ${roleData.title}`;
-    
-    const html = `
-        <div class="role-icon"><i class="${roleData.icon}"></i></div>
-        <div class="role-full-title">${escapeHtml(roleData.fullTitle)}</div>
-        <div class="role-department">${escapeHtml(roleData.department)}</div>
-        <div class="role-description">${escapeHtml(roleData.description)}</div>
-        
-        <div class="role-subsection">
-            <h4><i class="fas fa-tasks"></i> Обязанности</h4>
-            <ul>
-                ${roleData.responsibilities.map(item => `<li><i class="fas fa-check-circle"></i> ${escapeHtml(item)}</li>`).join('')}
-            </ul>
-        </div>
-        
-        <div class="role-subsection">
-            <h4><i class="fas fa-star"></i> Необходимые навыки</h4>
-            <ul>
-                ${roleData.skills.map(item => `<li><i class="fas fa-gem"></i> ${escapeHtml(item)}</li>`).join('')}
-            </ul>
-        </div>
-    `;
-    
-    container.innerHTML = html;
-}
-
-function openRoleModal(role, department, deptIcon) {
-    const modal = document.getElementById('roleModal');
-    if (!modal) return;
-    
-    const container = document.getElementById('roleModalContent');
-    const titleSpan = document.getElementById('roleModalTitle');
-    
-    titleSpan.innerHTML = `<i class="${role.icon}"></i> ${role.title}`;
-    
-    const html = `
-        <div class="role-icon"><i class="${role.icon}"></i></div>
-        <div class="role-full-title">${escapeHtml(role.fullTitle)}</div>
-        <div class="role-department"><i class="${deptIcon}"></i> ${escapeHtml(department)}</div>
-        <div class="role-description">${escapeHtml(role.description)}</div>
-        
-        <div class="role-subsection">
-            <h4><i class="fas fa-tasks"></i> Обязанности</h4>
-            <ul>
-                ${role.responsibilities.map(item => `<li><i class="fas fa-check-circle"></i> ${escapeHtml(item)}</li>`).join('')}
-            </ul>
-        </div>
-        
-        <div class="role-subsection">
-            <h4><i class="fas fa-star"></i> Необходимые навыки</h4>
-            <ul>
-                ${role.skills.map(item => `<li><i class="fas fa-gem"></i> ${escapeHtml(item)}</li>`).join('')}
-            </ul>
-        </div>
-    `;
-    
-    container.innerHTML = html;
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeRoleModal() {
-    const modal = document.getElementById('roleModal');
-    if (!modal) return;
-    
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-}
     
     init();
 })();
