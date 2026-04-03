@@ -1913,3 +1913,67 @@ p {
         font-size: 18px;
     }
 }
+
+@media (max-width: 768px) {
+    .org-three-columns {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+    
+    .org-column {
+        flex: 0 0 calc(50% - 15px);
+        min-width: 140px;
+        max-width: none;
+        margin-bottom: 15px;
+    }
+    
+    .dept-icon {
+        font-size: 32px;
+    }
+    
+    .dept-name {
+        font-size: 13px;
+    }
+    
+    .dept-leader i {
+        font-size: 20px;
+    }
+    
+    .dept-leader span {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .org-three-columns {
+        gap: 10px;
+    }
+    
+    .org-column {
+        flex: 0 0 calc(50% - 10px);
+        min-width: 120px;
+        padding: 12px;
+    }
+    
+    .dept-icon {
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+    
+    .dept-name {
+        font-size: 12px;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+    }
+    
+    .dept-leader i {
+        font-size: 18px;
+    }
+    
+    .dept-leader span {
+        font-size: 10px;
+    }
+}
