@@ -1930,6 +1930,23 @@ p {
         flex: 0 0 220px;
         min-width: 200px;
         max-width: none;
+        margin-bottom: 0;
+    }
+    
+    .dept-icon {
+        font-size: 36px;
+    }
+    
+    .dept-name {
+        font-size: 14px;
+    }
+    
+    .dept-leader i {
+        font-size: 22px;
+    }
+    
+    .dept-leader span {
+        font-size: 12px;
     }
     
     .org-three-columns::-webkit-scrollbar {
@@ -1948,5 +1965,32 @@ p {
     
     .org-three-columns::-webkit-scrollbar-thumb:hover {
         background: var(--accent);
+    }
+}
+
+@media (max-width: 480px) {
+    .org-column {
+        flex: 0 0 180px;
+        min-width: 170px;
+        padding: 15px;
+    }
+    
+    .dept-icon {
+        font-size: 30px;
+        margin-bottom: 8px;
+    }
+    
+    .dept-name {
+        font-size: 12px;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+    }
+    
+    .dept-leader i {
+        font-size: 18px;
+    }
+    
+    .dept-leader span {
+        font-size: 10px;
     }
 }
