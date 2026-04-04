@@ -168,8 +168,16 @@
                 </div>
             </div>
         </main>
-    </div>
-    
+    </div> 
+<script>
+    fetch('data/version.json?t=' + Date.now())
+        .then(res => res.json())
+        .then(data => {
+            document.querySelector('link[href*="wiki.css"]').href = `${data.css}?v=${data.version}`;
+            document.querySelector('script[src*="wiki.js"]').src = `${data.js}?v=${data.version}`;
+        })
+        .catch(console.warn);
+</script>
     <script src="js/wiki.js"></script>
 </body>
 </html>
