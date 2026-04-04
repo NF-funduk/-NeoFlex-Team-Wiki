@@ -2056,32 +2056,32 @@ p {
     }
 }
 
+.mod-role-desc,
+.team-description,
+.role-card-desc,
+.news-content,
+.faq-answer,
+.dept-description {
+    text-indent: 0 !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+
 @media (max-width: 768px) {
+    .mod-role-card,
+    .team-card,
+    .role-card {
+        align-items: flex-start !important;
+    }
+    
     .mod-role-desc,
-    .team-description,
-    .role-card-desc,
-    .dept-description,
-    .news-content,
-    .faq-answer,
-    .role-description,
-    .role-subsection li,
-    .dept-section li,
-    .card-desc,
-    p,
-    li,
-    span:not(.tag):not(.news-badge) {
-        white-space: normal !important;
-        word-break: break-word !important;
-        overflow-wrap: break-word !important;
-        text-indent: 0 !important;
+    .team-description {
+        text-align: left !important;
         padding-left: 0 !important;
+        margin-top: 0 !important;
     }
     
-    ul, ol {
-        padding-left: 20px !important;
-    }
-    
-    li {
-        margin-left: 0 !important;
+    div, p, span, li, .mod-role-title, .mod-role-desc {
+        text-indent: 0 !important;
     }
 }
