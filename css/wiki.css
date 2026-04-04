@@ -2020,10 +2020,24 @@ p {
 }
 
 @media (max-width: 768px) {
-    body.menu-open .wiki-main {
-        pointer-events: none;
+    body.menu-open {
+        overflow: hidden;
     }
     
+    body.menu-open .wiki-main,
+    body.menu-open .wiki-header,
+    body.menu-open .wiki-content,
+    body.menu-open .header-btn,
+    body.menu-open .wiki-main::after,
+    body.menu-open .card,
+    body.menu-open .role-card,
+    body.menu-open .org-column,
+    body.menu-open .back-btn,
+    body.menu-open .dept-roles-btn {
+        pointer-events: none !important;
+        user-select: none !important;
+    }
+
     body.menu-open .wiki-main::before {
         content: '';
         position: fixed;
@@ -2033,10 +2047,11 @@ p {
         height: 100%;
         background: rgba(0, 0, 0, 0.5);
         z-index: 1015;
-        pointer-events: auto;
+        pointer-events: none;
     }
     
-    body.menu-open .wiki-sidebar {
-        pointer-events: auto;
+    body.menu-open .wiki-sidebar,
+    body.menu-open .wiki-sidebar * {
+        pointer-events: auto !important;
     }
 }
