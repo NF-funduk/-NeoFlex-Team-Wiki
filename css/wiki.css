@@ -2056,32 +2056,9 @@ p {
     }
 }
 
-.mod-role-desc,
-.team-description,
-.role-card-desc,
-.news-content,
-.faq-answer,
-.dept-description {
-    text-indent: 0 !important;
-    padding-left: 0 !important;
-    margin-left: 0 !important;
-}
-
-@media (max-width: 768px) {
-    .mod-role-card,
-    .team-card,
-    .role-card {
-        align-items: flex-start !important;
-    }
-    
-    .mod-role-desc,
-    .team-description {
-        text-align: left !important;
-        padding-left: 0 !important;
-        margin-top: 0 !important;
-    }
-    
-    div, p, span, li, .mod-role-title, .mod-role-desc {
-        text-indent: 0 !important;
-    }
+.mod-role-desc::before,
+.team-description::before,
+.role-card-desc::before {
+    display: none !important;
+    content: none !important;
 }
