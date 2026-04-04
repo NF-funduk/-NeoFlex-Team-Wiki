@@ -2056,9 +2056,43 @@ p {
     }
 }
 
-.mod-role-desc::before,
-.team-description::before,
-.role-card-desc::before {
-    display: none !important;
-    content: none !important;
+.dept-section ul,
+.role-subsection ul {
+    list-style: none;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+
+.dept-section li,
+.role-subsection li {
+    padding: 8px 0;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-light);
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
+.dept-section li i,
+.role-subsection li i {
+    color: var(--accent);
+    width: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.dept-section li span,
+.role-subsection li span {
+    flex: 1;
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 768px) {
+    .dept-section li,
+    .role-subsection li {
+        word-break: break-word;
+    }
 }
