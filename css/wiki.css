@@ -309,26 +309,6 @@ body {
     position: relative;
 }
 
-.wiki-main::after {
-    content: 'by funduk';
-    position: absolute;
-    bottom: 16px;
-    right: 24px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--accent);
-    opacity: 0.7;
-    font-style: normal;
-    letter-spacing: 1px;
-    z-index: 1;
-    pointer-events: none;
-    background: var(--bg-primary);
-    padding: 4px 12px;
-    border-radius: 20px;
-    border: 1px solid var(--border-light);
-    transition: var(--transition);
-}
-
 .wiki-header {
     padding: 16px 32px;
     background: var(--bg-primary);
@@ -2120,4 +2100,218 @@ p {
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
+}
+
+.links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 24px;
+    margin: 32px 0;
+}
+
+.links-category {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.links-category:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: var(--accent-glow);
+}
+
+.links-category h2 {
+    margin: 0;
+    padding: 18px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+}
+
+.links-category h2 i {
+    color: var(--accent);
+    margin-right: 10px;
+}
+
+.links-list {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.link-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    text-decoration: none;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.link-card:hover {
+    transform: translateX(5px);
+    border-color: var(--accent);
+    background: var(--accent-light);
+}
+
+.link-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--accent);
+    transition: var(--transition);
+}
+
+.link-card:hover .link-icon {
+    background: var(--accent);
+    color: white;
+}
+
+.link-info {
+    flex: 1;
+}
+
+.link-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.link-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .links-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .link-card {
+        padding: 12px;
+    }
+    
+    .link-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+    
+    .link-title {
+        font-size: 14px;
+    }
+    
+    .link-desc {
+        font-size: 11px;
+    }
+}
+
+.news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    gap: 12px;
+}
+
+.news-title {
+    flex: 1;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    word-break: break-word;
+}
+
+.news-badge {
+    flex-shrink: 0;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .news-header {
+        flex-wrap: wrap;
+    }
+    
+    .news-title {
+        font-size: 16px;
+    }
+}
+
+.funduk-signature {
+    position: absolute;
+    bottom: 16px;
+    right: 24px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-shadow: none;
+    letter-spacing: 1px;
+    z-index: 100;
+    pointer-events: none;
+    background: var(--bg-primary);
+    padding: 2px 8px;
+    border-radius: 14px;
+    display: inline-block;
+    white-space: nowrap;
+    border: 1px solid var(--accent);
+    transition: all 0.3s ease;
+    animation: neonPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+    0%, 100% {
+        border-color: var(--accent);
+        box-shadow: 0 0 2px var(--accent);
+    }
+    50% {
+        border-color: var(--accent-hover);
+        box-shadow: 0 0 6px var(--accent);
+    }
+}
+
+.funduk-signature::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 50%, var(--accent) 100%);
+    background-size: 200% 200%;
+    border-radius: 16px;
+    z-index: -1;
+    animation: rotateBorder 3s ease-in-out infinite;
+    opacity: 0.5;
+}
+
+@keyframes rotateBorder {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }

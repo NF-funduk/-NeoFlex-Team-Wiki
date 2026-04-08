@@ -149,7 +149,7 @@
                     
                     <div class="role-card" data-page="non-game-details">
                         <div class="role-card-icon"><i class="fas fa-tools"></i></div>
-                        <div class="role-card-title">Неигровые роли</div>
+                        <div class="role-card-title">Тестирование, форум и медиа</div>
                         <div class="role-card-desc">Включает позиции, не связанные напрямую с игровым процессом: аналитика, реклама и другие вспомогательные функции.</div>
                     </div>
                 </div>
@@ -172,7 +172,7 @@
         },
         
         'non-game-details': {
-            title: 'Неигровые роли',
+            title: 'Тестирование, форум и медиа',
             content: `<div id="subpageContent"><div class="loading"><i class="fas fa-spinner fa-spin"></i> Загрузка...</div></div>`
         },
         
@@ -197,10 +197,71 @@
             content: `<div class="soon-placeholder"><div class="soon-icon"><i class="fas fa-clock"></i></div><h1>СКОРО</h1><p>Раздел находится в разработке</p><div class="soon-progress"><div class="progress-bar"></div></div></div>`
         },
 
-        resources: {
-            title: 'Ресурсы',
-            content: `<div class="soon-placeholder"><div class="soon-icon"><i class="fas fa-clock"></i></div><h1>СКОРО</h1><p>Раздел находится в разработке</p><div class="soon-progress"><div class="progress-bar"></div></div></div>`
-        },
+        links: {
+            title: 'Полезные ссылки',
+    content: `
+        <h1>Полезные ссылки</h1>
+        <p>Быстрый доступ к важным ресурсам проекта</p>
+        <div class="links-grid">
+            <div class="links-category">
+                <h2><i class="fas fa-comments"></i> Коммуникация</h2>
+                <div class="links-list">
+                    <a href="#" target="_blank" class="link-card">
+                        <div class="link-icon"><i class="fab fa-discord"></i></div>
+                        <div class="link-info">
+                            <div class="link-title">Discord сервер</div>
+                            <div class="link-desc">Основной чат команды и общение с игроками</div>
+                        </div>
+                    </a>
+                    <a href="#" target="_blank" class="link-card">
+                        <div class="link-icon"><i class="fab fa-telegram"></i></div>
+                        <div class="link-info">
+                            <div class="link-title">Telegram канал</div>
+                            <div class="link-desc">Новости и уведомления проекта</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="links-category">
+    <h2><i class="fas fa-globe"></i> Проект</h2>
+    <div class="links-list">
+        <a href="#" target="_blank" class="link-card">
+            <div class="link-icon"><i class="fa-regular fa-pen-to-square"></i></div>
+            <div class="link-info">
+                <div class="link-title">Форум проекта</div>
+                <div class="link-desc">Обсуждения, новости и обратная связь от игроков</div>
+            </div>
+        </a>
+        <a href="#" target="_blank" class="link-card">
+            <div class="link-icon"><i class="fas fa-headset"></i></div>
+            <div class="link-info">
+                <div class="link-title">Система поддержки</div>
+                <div class="link-desc">Создание обращений и помощь игрокам</div>
+            </div>
+        </a>
+    </div>
+</div>
+           <div class="links-category">
+    <h2><i class="fa-solid fa-hexagon-nodes"></i> Модерирование</h2>
+    <div class="links-list">
+        <a href="#" target="_blank" class="link-card">
+            <div class="link-icon"><i class="fa-solid fa-display"></i></div>
+            <div class="link-info">
+                <div class="link-title">Панель управления</div>
+                <div class="link-desc">Всё для удобной работы состава</div>
+            </div>
+        </a>
+        <a href="#" target="_blank" class="link-card">
+            <div class="link-icon"><i class="fa-solid fa-book"></i></div>
+            <div class="link-info">
+                <div class="link-title">Правила проекта</div>
+                <div class="link-desc">Общие правила проекта</div>
+            </div>
+        </a>
+    </div>
+</div>
+    `
+},
 
         faq: {
             title: 'FAQ',
@@ -244,7 +305,7 @@
         if (!teamGrid) return;
         
         try {
-            const response = await fetch('data/team.json?t=' + Date.now());
+            const response = await fetch('data/info/team.json?t=' + Date.now());
             if (!response.ok) throw new Error('Файл не найден');
             
             const data = await response.json();
@@ -288,21 +349,25 @@
     let title = '';
     
     if (pageId === 'moderation-details') {
-        jsonFile = 'data/moderation.json';
-        rolesFile = 'data/roles/moderation.json';
-        title = 'Модерация сервера';
-    } else if (pageId === 'support-details') {
-        jsonFile = 'data/support.json';
-        rolesFile = 'data/roles/support.json';
-        title = 'Support';
-    } else if (pageId === 'discord-details') {
-        jsonFile = 'data/discord.json';
-        rolesFile = 'data/roles/discord.json';
-        title = 'Discord';
-    } else {
-        container.innerHTML = '<div class="empty-state">Страница не найдена</div>';
-        return;
-    }
+    jsonFile = 'data/info/moderation.json';
+    rolesFile = 'data/roles/moderation.json';
+    title = 'Модерация сервера';
+} else if (pageId === 'support-details') {
+    jsonFile = 'data/info/support.json';
+    rolesFile = 'data/roles/support.json';
+    title = 'Support';
+} else if (pageId === 'discord-details') {
+    jsonFile = 'data/info/discord.json';
+    rolesFile = 'data/roles/discord.json';
+    title = 'Discord';
+} else if (pageId === 'non-game-details') {
+    jsonFile = 'data/info/non-game.json';
+    rolesFile = 'data/roles/non-game.json';
+    title = 'Тестирование, форум и медиа';
+} else {
+    container.innerHTML = '<div class="empty-state">Страница не найдена</div>';
+    return;
+}
     
     try {
         const [deptResponse, rolesResponse] = await Promise.all([
