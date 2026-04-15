@@ -1,3 +1,26 @@
+const SITE_DISABLED = true;
+
+if (typeof SITE_DISABLED !== 'undefined' && SITE_DISABLED) {
+    document.addEventListener('DOMContentLoaded', function() {
+        const overlay = document.getElementById('unavailableOverlay');
+        const wikiContainer = document.querySelector('.wiki-container');
+        
+        if (overlay) {
+            overlay.style.display = 'flex';
+        }
+        if (wikiContainer) {
+            wikiContainer.style.display = 'none';
+        }
+    });
+} else {
+    document.addEventListener('DOMContentLoaded', function() {
+        const overlay = document.getElementById('unavailableOverlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+        }
+    });
+}
+
 (function() {
     // ========== СОСТОЯНИЕ ==========
     let currentPage = 'dashboard';
@@ -192,10 +215,10 @@
             content: `<div class="soon-placeholder"><div class="soon-icon"><i class="fas fa-clock"></i></div><h1>СКОРО</h1><p>Раздел находится в разработке</p><div class="soon-progress"><div class="progress-bar"></div></div></div>`
         },
         
-        'team-rules': {
-            title: 'Правила состава',
-            content: `<div class="soon-placeholder"><div class="soon-icon"><i class="fas fa-clock"></i></div><h1>СКОРО</h1><p>Раздел находится в разработке</p><div class="soon-progress"><div class="progress-bar"></div></div></div>`
-        },
+       'team-rules': {
+    title: 'Правила состава',
+    content: `<div id="rulesContent"><div class="loading"><i class="fas fa-spinner fa-spin"></i> Загрузка правил...</div></div>`
+},
 
         links: {
             title: 'Полезные ссылки',
@@ -242,7 +265,7 @@
     </div>
 </div>
            <div class="links-category">
-    <h2><i class="fa-solid fa-hexagon-nodes"></i> Модерирование</h2>
+    <h2><i class="fa-solid fa-person"></i> Модерирование</h2>
     <div class="links-list">
         <a href="#" target="_blank" class="link-card">
             <div class="link-icon"><i class="fa-solid fa-display"></i></div>
@@ -605,6 +628,59 @@
             loadPage('roles');
         }
     }
+    // ========== ЗАГРУЗКА ПРАВИЛ СОСТАВА ==========
+async function loadTeamRules() {
+    const container = document.getElementById('rulesContent');
+    if (!container) return;
+    
+    try {
+        const response = await fetch('data/rule/staff.json?t=' + Date.now());
+        if (!response.ok) throw new Error('Файл не найден');
+        
+        const data = await response.json();
+        const teamRules = data.teamRules;
+        
+        let html = `
+            <h1>Правила состава NeoFlex</h1>
+            <p>Внутренние правила для всех членов команды</p>
+            <div class="rules-container">
+        `;
+        
+        for (const block of teamRules) {
+            html += `
+                <div class="rule-block">
+                    <div class="rule-block-title">
+                        <h2><i class="fa-solid fa-paperclip"></i> ${escapeHtml(block.block)}</h2>
+                    </div>
+                    <div class="rule-list">
+                        ${block.rules.map(rule => `
+                            <div class="rule-item">
+                                <div class="rule-number">${escapeHtml(rule.number)}</div>
+                                <div class="rule-content">
+                                    <div class="rule-title">${escapeHtml(rule.title)}</div>
+                                    <div class="rule-short">${escapeHtml(rule.short)}</div>
+                                    <div class="rule-description">${formatRuleDescription(rule.description)}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        html += `</div>`;
+        container.innerHTML = html;
+        
+    } catch (error) {
+        console.error('Ошибка загрузки правил:', error);
+        container.innerHTML = '<div class="empty-state">⚠️ Ошибка загрузки правил. Убедитесь, что файл data/rules.json существует.</div>';
+    }
+}
+
+function formatRuleDescription(text) {
+    if (!text) return '';
+    return escapeHtml(text).replace(/\n/g, '<br>');
+}
     
     // ========== НОВОСТИ ==========
     async function loadNews() {
@@ -840,6 +916,8 @@
             setupCardNavigation();
         } else if (pageId === 'team-structure') {
             setTimeout(() => bindDeptCardsClick(), 50);
+        } else if (pageId === 'team-rules') {
+            loadTeamRules();
         }
         
         wikiContent.scrollTop = 0;
